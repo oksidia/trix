@@ -21,6 +21,13 @@ testGroup "Composition input", template: "editor_empty", ->
         assert.equal getEditorElement().value, "<div>é</div>"
         expectDocument "é\n"
 
+  test "pressing return creates new block", (expectDocument) ->
+    typeCharacters "ab", ->
+      pressKey "return", ->
+        document = getDocument()
+        assert.equal document.getBlockCount(), 2
+        expectDocument "ab\n\n"
+
   test "pressing return after a canceled composition", (expectDocument) ->
     typeCharacters "ab", ->
       triggerEvent document.activeElement, "compositionend", data: "ab"
